@@ -1,0 +1,13 @@
+Banco de Chile
+Bank name
+Banco de Chile
+Account type
+vista
+Account number
+000102222180
+RUT
+27.805.127-7
+Email Address
+emersonmendoza300@gmail.com
+nombre completo del titular de la cuenta
+MENDOZA RODRIGUEZ EMERSON RAZELL
