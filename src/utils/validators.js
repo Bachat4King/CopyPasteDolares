@@ -30,11 +30,9 @@ function validateAccountNumber(datos) {
         }
     }
 
-    if (datos.bank.toLowerCase().includes("santander")) {
-        datos.account_number = datos.account_number.replace(/[-.]/g, '');
-    } else {
-        datos.account_number = datos.account_number.replace(/[-. ]/g, '');
-    }
+
+    datos.account_number = datos.account_number.replace(/[-. ]/g, '');
+    
 
     datos.account_number = datos.account_number.replace(/^0+/, '')
 
@@ -49,7 +47,8 @@ function validateAccountType(datos) {
                         'cuentavistarut','cuentarutvista', 'vistacuentarut', 'cunetarut', 'cuneta ru',
                         'rutcuenta', 'rutcuneta', 'cuentarutcuentavista', 'cuentavistacuentarut', 'débito', 'debito', 'debit',
                         'crédito', 'credito', 'credit', 'ctarut', 'chequeraeléctrica', 'chequeraelectrica', 'visadebito', 'cuentarutvisa', 'debitovisa',
-                        'cuentarutdebito', 'cuentarutdébito', 'chequeraelectrónica', 'cuebtarut', 'visa', 'rur', 'cuentavisa', 'cuestarut', 'devito'];
+                        'cuentarutdebito', 'cuentarutdébito', 'chequeraelectrónica', 'cuebtarut', 'visa', 'rur', 'cuentavisa', 'cuestarut', 'devito',
+                        'cuentarutvisadébito', 'cuentarun', 'visarut', 'bancovisa'];
     const bankKeywords = ['pago', 'tenpo', 'tempo'];
 
     if (rutKeywords.includes(accountType.replace(' ', '').replace('/', '').replace('-', '').replace("'\'", '')) || bankKeywords.some(keyword => bank.includes(keyword))) {
