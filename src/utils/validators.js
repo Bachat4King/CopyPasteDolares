@@ -1,133 +1,218 @@
+function removerTildes(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 function validateRut(datos) {
-    datos.rut = datos.rut.replace(/[.\s]/g, '');
-    if (!datos.rut.includes('-')) {
-        datos.rut = datos.rut.slice(0, -1) + '-' + datos.rut.slice(-1);
+    datos.rut = datos.rut.replace(/[.\s]/g, "");
+    if (!datos.rut.includes("-")) {
+        datos.rut = datos.rut.slice(0, -1) + "-" + datos.rut.slice(-1);
     }
 
     return datos;
 }
 
 function validateAccountNumber(datos) {
+
+    // Remove leading zeros
+    datos.account_number = datos.account_number.replace(/^0+/, "");
+
     if (datos.bank.toLowerCase().includes("estado")) {
-        if (datos.account_number.slice(-2).includes("-") || datos.account_number === datos.rut.replace('-', '')) {
+        if (
+            datos.account_number.slice(-2).includes("-") ||
+            datos.account_number === datos.rut.replace("-", "")
+        ) {
             datos.account_number = datos.account_number.slice(0, -1);
             if (datos.account_number.length >= 16) {
-                datos.account_number = datos.rut.slice(0, -1).replace('-', '');
+                datos.account_number = datos.rut.slice(0, -1).replace("-", "");
+            } else if (!/^\d+$/.test(datos.account_number)) {
+                datos.account_number = datos.rut.slice(0, -1).replace("-", "");
             }
-    
-            else if (!/^\d+$/.test(datos.account_number)) {
-                datos.account_number = datos.rut.slice(0, -1).replace('-', '');
-            }
-            
         }
 
         if (datos.account_number.length >= 16) {
-            datos.account_number = datos.rut.slice(0, -1).replace('-', '');
-        }
-
-        else if (!/^\d+$/.test(datos.account_number)) {
-            datos.account_number = datos.rut.slice(0, -1).replace('-', '');
+            datos.account_number = datos.rut.slice(0, -1).replace("-", "");
+        } else if (!/^\d+$/.test(datos.account_number)) {
+            datos.account_number = datos.rut.slice(0, -1).replace("-", "");
         }
     }
 
+    // Remove all non-numeric characters
+    datos.account_number = datos.account_number.replace(/[-. ]/g, "");
 
-    datos.account_number = datos.account_number.replace(/[-. ]/g, '');
-    
-
-    datos.account_number = datos.account_number.replace(/^0+/, '')
 
     return datos;
 }
 
 function validateAccountType(datos) {
-    const accountType = datos.account_type.toLowerCase();
+    const accountTypeMap = new Map([
+        ["rut", "Cuenta Vista"],
+        ["ru", "Cuenta Vista"],
+        ["ctmrut", "Cuenta Vista"],
+        ["ruk", "Cuenta Vista"],
+        ["run", "Cuenta Vista"],
+        ["rur", "Cuenta Vista"],
+        ["rutcuenta", "Cuenta Vista"],
+        ["rutcuneta", "Cuenta Vista"],
+        ["rutacuenta", "Cuenta Vista"],
+        ["rutacuneta", "Cuenta Vista"],
+        ["rutacuentavista", "Cuenta Vista"],
+        ["rutacuentavist", "Cuenta Vista"],
+        ["ruth", "Cuenta Vista"],
+
+        ["cuentavista", "Cuenta Vista"],
+        ["cuentarut", "Cuenta Vista"],
+        ["cuentarud", "Cuenta Vista"],
+        ["cuentaruth", "Cuenta Vista"],
+        ["cuantarut", "Cuenta Vista"],
+        ["cuentarun", "Cuenta Vista"],
+        ["cuentarutcuentavista", "Cuenta Vista"],
+        ["cuentavistacuentarut", "Cuenta Vista"],
+        ["cuentarutvisa", "Cuenta Vista"],
+        ["cuentarutdebito", "Cuenta Vista"],
+        ["cuentaru", "Cuenta Vista"],
+        ["cuentavistarut", "Cuenta Vista"],
+        ["cuentarutvista", "Cuenta Vista"],
+        ["cuentarutvisadebito", "Cuenta Vista"],
+
+        ["cunetarut", "Cuenta Vista"],
+        ["cuneraru", "Cuenta Vista"],
+        ["cuebtarut", "Cuenta Vista"],
+        ["cuestarut", "Cuenta Vista"],
+        ["ctarut", "Cuenta Vista"],
+
+        ["debito", "Cuenta Vista"],
+        ["debit", "Cuenta Vista"],
+        ["deb", "Cuenta Vista"],
+        ["devito", "Cuenta Vista"],
+        ["debitovisa", "Cuenta Vista"],
+
+        ["crédito", "Cuenta Vista"],
+        ["credito", "Cuenta Vista"],
+        ["credit", "Cuenta Vista"],
+
+        ["chequeraelectrica", "Cuenta Vista"],
+        ["chequeraelectronica", "Cuenta Vista"],
+
+        ["visa", "Cuenta Vista"],
+        ["visadebito", "Cuenta Vista"],
+        ["visarut", "Cuenta Vista"],
+
+        ["cuentavisa", "Cuenta Vista"],
+
+        ["bancovisa", "Cuenta Vista"],
+
+        ["vista", "Cuenta Vista"],
+        ["vists", "Cuenta Vista"],
+        ["vist", "Cuenta Vista"],
+        ["vistaa", "Cuenta Vista"],
+        ["vistaaa", "Cuenta Vista"],
+        ["vistacuentarut", "Cuenta Vista"],
+
+        ["cuentalukascuentavista", "Cuenta Vista"],
+        ["cuentamaslukascuentavista", "Cuenta Vista"],
+        ["cuentamaslukasvista", "Cuenta Vista"],
+        ["cuentamaslukas", "Cuenta Vista"],
+        ["cuentamasluka", "Cuenta Vista"],
+        ["cuentalukas", "Cuenta Vista"],
+        ["cuentaluka", "Cuenta Vista"],
+        ["cuentamaslucas", "Cuenta Vista"],
+        ["cuentamasluca", "Cuenta Vista"],
+        ["cuentalucas", "Cuenta Vista"],
+        ["cuentaluca", "Cuenta Vista"],
+        ["cuentamaslucasvista", "Cuenta Vista"],
+
+        ["corr", "Cuenta Corriente"],
+        ["corriente", "Cuenta Corriente"],
+        ["corrient", "Cuenta Corriente"],
+        ["corrientes", "Cuenta Corriente"],
+        ["corrientee", "Cuenta Corriente"],
+        ["corrienta", "Cuenta Corriente"],
+
+        ["cuentadeahorro", "Cuenta Ahorro"],
+        ["cuentadeahorros", "Cuenta Ahorro"],
+        ["cuentadeahorr", "Cuenta Ahorro"],
+        ["cuentadeahorra", "Cuenta Ahorro"],
+        ["cuentaahorro", "Cuenta Ahorro"],
+        ["cuentaahorros", "Cuenta Ahorro"],
+        ["cuentaahorr", "Cuenta Ahorro"],
+        ["cuentaahorra", "Cuenta Ahorro"],
+        ["ahorro", "Cuenta Ahorro"],
+        ["ahorros", "Cuenta Ahorro"],
+        ["ahorr", "Cuenta Ahorro"],
+        ["ahorra", "Cuenta Ahorro"],
+    ]);
+
+    const accountType = removerTildes(datos.account_type.toLowerCase()).replace(
+        /[^a-z]/g,
+        ""
+    );
     const bank = datos.bank.toLowerCase();
 
-    const rutKeywords = ['rut', 'cuentarut', 'cuentarud', 'cuentaruth', 'ru', 'cuentaru', 'ctmrut', 'ruk', 'run',
-                        'cuentavistarut','cuentarutvista', 'vistacuentarut', 'cunetarut', 'cuneta ru',
-                        'rutcuenta', 'rutcuneta', 'cuentarutcuentavista', 'cuentavistacuentarut', 'débito', 'debito', 'debit',
-                        'crédito', 'credito', 'credit', 'ctarut', 'chequeraeléctrica', 'chequeraelectrica', 'visadebito', 'cuentarutvisa', 'debitovisa',
-                        'cuentarutdebito', 'cuentarutdébito', 'chequeraelectrónica', 'cuebtarut', 'visa', 'rur', 'cuentavisa', 'cuestarut', 'devito',
-                        'cuentarutvisadébito', 'cuentarun', 'visarut', 'bancovisa'];
-    const bankKeywords = ['pago', 'tenpo', 'tempo'];
+    const bankVistaKeywords = ["pago", "tenpo", "tempo"];
+    const normalizedAccountType =
+        accountTypeMap.get(accountType) || "Cuenta Corriente";
 
-    if (rutKeywords.includes(accountType.replace(' ', '').replace('/', '').replace('-', '').replace("'\'", '')) || bankKeywords.some(keyword => bank.includes(keyword))) {
-        datos.account_type = 'Cuenta Vista';
-    } else if (accountType.includes('vista') || accountType.includes('vists')) {
-        datos.account_type = 'Cuenta Vista';
-    } else if (accountType.includes('corriente')) {
-        datos.account_type = 'Cuenta Corriente';
-    } else if (accountType.includes('cuenta de ahorra')) {
-        datos.account_type = 'Cuenta Ahorro';
+    if (
+        normalizedAccountType === "Cuenta Corriente" &&
+        bankVistaKeywords.some((keyword) => bank.includes(keyword))
+    ) {
+        datos.account_type = "Cuenta Vista";
     } else {
-        datos.account_type = 'Cuenta Corriente';
+        datos.account_type = normalizedAccountType;
     }
 
-    datos.account_type = datos.account_type.replace(/\b\w/g, c => c.toUpperCase());
+    datos.account_type = datos.account_type.replace(/\b\w/g, (c) =>
+        c.toUpperCase()
+    );
 
     return datos;
 }
 
-
 function validateBank(datos) {
+    const bankMappings = new Map([
+        ["bancosantanderchile", "Banco Santander"],
 
-    if (datos.bank.toLowerCase().includes('banco santander chile')) {
-        datos.bank = 'Banco Santander';
-    }
+        ["bcichile", "Banco BCI"],
+        ["bancobci", "Banco BCI"],
+        ["bci", "Banco BCI"],
+        ["bcimach", "Banco BCI"],
+        ["mach", "Banco BCI"],
+        ["machbci", "Banco BCI"],
+        ["bcibancocreditoinversiones", "Banco BCI"],
+        ["bancocreditoinversiones", "Banco BCI"],
 
-    if (datos.bank.toLowerCase().includes('bci chile') || datos.bank.toLowerCase().includes('banco bci')
-        || datos.bank.toLowerCase().includes('bancobci') || datos.bank.toLowerCase().includes('bci')
-        || datos.bank.toLowerCase().includes('bci mach') || datos.bank.toLowerCase().includes('bcimach')
-        || datos.bank.toLowerCase().includes('bci/mach') || datos.bank.toLowerCase().includes('mach')
-        || datos.bank.toLowerCase().includes('mach bci') || datos.bank.toLowerCase().includes('mach bci')
-        || datos.bank.toLowerCase().includes('machbci') || datos.bank.toLowerCase().includes('mach/bci')
-        || datos.bank.toLowerCase().includes('bci banco crédito inversiones') || datos.bank.toLowerCase().includes('bcibancocréditoinversiones')
-        || datos.bank.toLowerCase().includes('bci banco credito inversiones') || datos.bank.toLowerCase().includes('bcibancocreditoinversiones')
-        || datos.bank.toLowerCase().includes('banco crédito inversiones') || datos.bank.toLowerCase().includes('bancocréditoinversiones')
-        || datos.bank.toLowerCase().includes('banco credito inversiones') || datos.bank.toLowerCase().includes('bancocreditoinversiones')) {
-        datos.bank = 'Banco BCI';
-    }
+        ["mercadopago", "Mercado Pago"],
 
-    if (datos.bank.toLowerCase().includes('mercado pago') || datos.bank.toLowerCase().includes('mercadopago')) {
-        datos.bank = 'Mercado Pago';
-    }
+        ["bancoitau", "Banco Itau"],
+        ["itau", "Banco Itau"],
 
-    if (datos.bank.toLowerCase().includes('banco itau') || datos.bank.toLowerCase().includes('bancoitau')
-        || datos.bank.toLowerCase().includes('banco itaú') || datos.bank.toLowerCase().includes('bancoitaú')
-        || datos.bank.toLowerCase().includes('itau') || datos.bank.toLowerCase().includes('itaú')) {
-        datos.bank = 'Banco Itau';
-    }
+        ["bancoscotiabank", "Banco Scotiabank"],
+        ["scotiabank", "Banco Scotiabank"],
 
-    if (datos.bank.toLowerCase().includes('banco scotiabank') || datos.bank.toLowerCase().includes('bancoscotiabank') || datos.bank.toLowerCase().includes('scotiabank')) {
-        datos.bank = 'Banco Scotiabank';
-    }
+        ["bancoripley", "Banco Ripley"],
+        ["ripley", "Banco Ripley"],
 
-    if (datos.bank.toLowerCase().includes('banco ripley') || datos.bank.toLowerCase().includes('bancoripley') || datos.bank.toLowerCase().includes('ripley')) {
-        datos.bank = 'Banco Ripley';
-    }
+        ["bancobice", "Banco BICE"],
+        ["bice", "Banco BICE"],
 
-    if (datos.bank.toLowerCase().includes('banco bice') || datos.bank.toLowerCase().includes('bancobice') || datos.bank.toLowerCase().includes('bice')) {
-        datos.bank = 'Banco BICE';
-    }
+        ["bancosecurity", "Banco Security"],
+        ["security", "Banco Security"],
 
-    if (datos.bank.toLowerCase().includes('banco security') || datos.bank.toLowerCase().includes('bancosecurity') || datos.bank.toLowerCase().includes('security')) {
-        datos.bank = 'Banco Security';
-    }
+        ["tenpo", "Tenpo"],
+        ["tenpoprepago", "Tenpo"],
+        ["tempo", "Tenpo"],
+        ["tempoprepago", "Tenpo"],
 
-    if (datos.bank.toLowerCase().includes('tenpo') || datos.bank.toLowerCase().includes('tenpo prepago')
-        || datos.bank.toLowerCase().includes('tenpoprepago') || datos.bank.toLowerCase().includes('tempo')
-        || datos.bank.toLowerCase().includes('tempo prepago') || datos.bank.toLowerCase().includes('tempoprepago')) {
-        datos.bank = 'Tenpo';
-    }
+        ["tapp", "TAPP Caja Los Andes"],
+        ["cajalosandes", "TAPP Caja Los Andes"],
+        ["tapplosandes", "TAPP Caja Los Andes"],
+        ["tapocajalosandes", "TAPP Caja Los Andes"],
+        ["tapo", "TAPP Caja Los Andes"],
+        ["tappo", "TAPP Caja Los Andes"],
+    ]);
 
-    if (datos.bank.toLowerCase().includes('tapp') || datos.bank.toLowerCase().includes('tapp caja los andes')
-        || datos.bank.toLowerCase().includes('caja los andes') || datos.bank.toLowerCase().includes('cajalosandes')
-        || datos.bank.toLowerCase().includes('tappcajalosades') || datos.bank.toLowerCase().includes('tapp caja los andes')
-        || datos.bank.toLowerCase().includes('tapplosandes') || datos.bank.toLowerCase().includes('tapo caja los andes')
-        || datos.bank.toLowerCase().includes('tapocajalosandes') || datos.bank.toLowerCase().includes('tapo')
-    ) {
-        datos.bank = 'TAPP Caja Los Andes';
-    }
+    const bank = removerTildes(datos.bank.toLowerCase()).replace(/[^a-z]/g, "");
+    datos.bank = bankMappings.get(bank) || datos.bank;
 
     return datos;
 }
@@ -136,5 +221,6 @@ export {
     validateRut,
     validateAccountNumber,
     validateAccountType,
-    validateBank
+    validateBank,
+    removerTildes,
 };

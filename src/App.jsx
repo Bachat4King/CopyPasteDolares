@@ -21,21 +21,26 @@ function App() {
   const handleClick = () => {
     setText("");
     const data = getBankData(text.split("\n"));
-    if (data.account_number !== data.rut?.slice(0, -2) && data.bank.toLowerCase().includes('estado') && !data.account_type.toLowerCase().includes('corriente')) {
+
+    if (
+      data.account_number !== data.rut?.slice(0, -2) &&
+      data.bank.toLowerCase().includes("estado") &&
+      !data.account_type.toLowerCase().includes("corriente") &&
+      !data.account_type.toLowerCase().includes("ahorro")
+    ) {
       setDisplayErrorMesagge(true);
-      navigator.clipboard
-      .writeText("")
-      setDisplayMessage("NO TRANSFRERIR NO COPIADO, NUMERO DE CUENTA Y RUT NO COINCIDE");
-      return
-    }
-    else{
+      navigator.clipboard.writeText("");
+      setDisplayMessage(
+        "NO TRANSFERIR, NO COPIADO: NÚMERO DE CUENTA Y RUT NO COINCIDEN"
+      );
+      return;
+    } else {
       setDisplayErrorMesagge(false);
     }
     setDisplayObject(data);
     const displayString = buildDisplayString(data);
     if (!displayString) {
-      navigator.clipboard
-      .writeText("")
+      navigator.clipboard.writeText("");
       setDisplayMessage("El Formato de los datos no es correcto");
       return;
     }
@@ -90,7 +95,9 @@ function App() {
       </div>
       <div className="display-section">
         {displayErrorMessage && (
-          <div>Revisa el número de cuenta, no coincide con el RUT NO TRANSFERIR</div>
+          <div>
+            Revisa el número de cuenta, no coincide con el RUT NO TRANSFERIR
+          </div>
         )}
         {!displayErrorMessage && (
           <div>

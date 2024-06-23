@@ -1,8 +1,6 @@
-import {validateRut, validateAccountNumber, validateAccountType, validateBank} from './validators.js';
+import {validateRut, validateAccountNumber, validateAccountType, validateBank, removerTildes} from './validators.js';
 
-function removerTildes(texto) {
-    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+
 
 
 export default function getBankData(fileData, datos = {}) {
