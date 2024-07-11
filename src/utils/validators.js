@@ -174,20 +174,9 @@ function validateAccountType(datos) {
 
 function validateBank(datos) {
     const bankMappings = new Map([
-        ["bancoestado", "Banco Estado"],
-        ["ancoestado", "Banco Estado"],
-
         ["bancosantanderchile", "Banco Santander"],
-        ["ancosantanderchile", "Banco Santander"],
-
-        ["bancofalabella", "Banco Falabella"],
-        ["ancofalabella", "Banco Falabella"],
-
-        ["bancodechile", "Banco de Chile"],
-        ["ancodechile", "Banco de Chile"],
 
         ["bcichile", "Banco BCI"],
-        ["cichile", "Banco BCI"],
         ["bancobci", "Banco BCI"],
         ["bci", "Banco BCI"],
         ["bcimach", "Banco BCI"],
