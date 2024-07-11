@@ -58,6 +58,7 @@ function validateAccountType(datos) {
         ["rutacuentavista", "Cuenta Vista"],
         ["rutacuentavist", "Cuenta Vista"],
         ["ruth", "Cuenta Vista"],
+        ["ruc", "Cuenta Vista"]
 
         ["cuentavista", "Cuenta Vista"],
         ["cuentarut", "Cuenta Vista"],
@@ -73,6 +74,9 @@ function validateAccountType(datos) {
         ["cuentavistarut", "Cuenta Vista"],
         ["cuentarutvista", "Cuenta Vista"],
         ["cuentarutvisadebito", "Cuenta Vista"],
+
+        ["cuestavista", "Cuenta Vista"],
+        ["cuestavist", "Cuenta Vista"],
 
         ["cunetarut", "Cuenta Vista"],
         ["cuneraru", "Cuenta Vista"],
@@ -217,6 +221,7 @@ function validateBank(datos) {
         ["tapp", "TAPP Caja Los Andes"],
         ["cajalosandes", "TAPP Caja Los Andes"],
         ["tapplosandes", "TAPP Caja Los Andes"],
+        ["tappcajalosandes", "TAPP Caja Los Andes"],
         ["tapocajalosandes", "TAPP Caja Los Andes"],
         ["tapo", "TAPP Caja Los Andes"],
         ["tappo", "TAPP Caja Los Andes"],
