@@ -58,8 +58,11 @@ function validateAccountType(datos) {
         ["rutacuentavista", "Cuenta Vista"],
         ["rutacuentavist", "Cuenta Vista"],
         ["ruth", "Cuenta Vista"],
+        ["rutctavista", "Cuenta Vista"],
+        ["rutctavista", "Cuenta Vista"],
 
         ["cuentavista", "Cuenta Vista"],
+        ["cuentavistarut", "Cuenta Vista"],
         ["cuentarut", "Cuenta Vista"],
         ["cuentarud", "Cuenta Vista"],
         ["cuentaruth", "Cuenta Vista"],
@@ -73,12 +76,21 @@ function validateAccountType(datos) {
         ["cuentavistarut", "Cuenta Vista"],
         ["cuentarutvista", "Cuenta Vista"],
         ["cuentarutvisadebito", "Cuenta Vista"],
+        ["cuentafut", "Cuenta Vista"],
+        ["cuantorut", "Cuenta Vista"],
+        ["cuantoruth", "Cuenta Vista"],
+        ["cuentabrut", "Cuenta Vista"],
+        ["cuentaviata", "Cuenta Vista"],
+        ["cuenta rit", "Cuenta Vista"],
 
         ["cunetarut", "Cuenta Vista"],
+        ["cuenarut", "Cuenta Vista"],
+        ["cunetavista", "Cuenta Vista"],
         ["cuneraru", "Cuenta Vista"],
         ["cuebtarut", "Cuenta Vista"],
         ["cuestarut", "Cuenta Vista"],
         ["ctarut", "Cuenta Vista"],
+        ["ctavista", "Cuenta Vista"],
 
         ["debito", "Cuenta Vista"],
         ["debit", "Cuenta Vista"],
@@ -95,6 +107,7 @@ function validateAccountType(datos) {
 
         ["visa", "Cuenta Vista"],
         ["visadebito", "Cuenta Vista"],
+        ["visadeb", "Cuenta Vista"],
         ["visarut", "Cuenta Vista"],
 
         ["cuentavisa", "Cuenta Vista"],
@@ -102,11 +115,15 @@ function validateAccountType(datos) {
         ["bancovisa", "Cuenta Vista"],
 
         ["vista", "Cuenta Vista"],
+        ["vistadebito", "Cuenta Vista"],
+        ["vistadeb", "Cuenta Vista"],
         ["vists", "Cuenta Vista"],
         ["vist", "Cuenta Vista"],
+        ["vidta", "Cuenta Vista"],
         ["vistaa", "Cuenta Vista"],
         ["vistaaa", "Cuenta Vista"],
         ["vistacuentarut", "Cuenta Vista"],
+        ["vistamaslucasdebito", "Cuenta Vista"],
 
         ["cuentalukascuentavista", "Cuenta Vista"],
         ["cuentamaslukascuentavista", "Cuenta Vista"],
@@ -120,6 +137,8 @@ function validateAccountType(datos) {
         ["cuentalucas", "Cuenta Vista"],
         ["cuentaluca", "Cuenta Vista"],
         ["cuentamaslucasvista", "Cuenta Vista"],
+        ["cuentamaslucasdebito", "Cuenta Vista"],
+
 
         ["corr", "Cuenta Corriente"],
         ["corriente", "Cuenta Corriente"],
@@ -191,6 +210,8 @@ function validateBank(datos) {
         ["machbci", "Banco BCI"],
         ["bcibancocreditoinversiones", "Banco BCI"],
         ["bancocreditoinversiones", "Banco BCI"],
+        ["bcibancodecreditoeinversiones", "Banco BCI"],
+        ["bancodecreditoyinversionesbci", "Banco BCI"],
 
         ["mercadopago", "Mercado Pago"],
 
@@ -199,6 +220,7 @@ function validateBank(datos) {
 
         ["bancoscotiabank", "Banco Scotiabank"],
         ["scotiabank", "Banco Scotiabank"],
+        ["scoitiabank", "Banco Scotiabank"],
 
         ["bancoripley", "Banco Ripley"],
         ["ripley", "Banco Ripley"],
