@@ -59,7 +59,7 @@ function validateAccountType(datos) {
         ["rutacuentavist", "Cuenta Vista"],
         ["ruth", "Cuenta Vista"],
         ["rutctavista", "Cuenta Vista"],
-        ["rutctavista", "Cuenta Vista"],
+        ["rutvista", "Cuenta Vista"],
 
         ["cuentavista", "Cuenta Vista"],
         ["cuentavistarut", "Cuenta Vista"],
@@ -82,8 +82,12 @@ function validateAccountType(datos) {
         ["cuentabrut", "Cuenta Vista"],
         ["cuentaviata", "Cuenta Vista"],
         ["cuenta rit", "Cuenta Vista"],
+        ["cuenta ruc", "Cuenta Vista"],
+        ["cuentavistactarut", "Cuenta Vista"],
 
         ["cunetarut", "Cuenta Vista"],
+        ["cunetaruc", "Cuenta Vista"],
+        ["cunetaruth", "Cuenta Vista"],
         ["cuenarut", "Cuenta Vista"],
         ["cunetavista", "Cuenta Vista"],
         ["cuneraru", "Cuenta Vista"],
@@ -167,7 +171,7 @@ function validateAccountType(datos) {
     );
     const bank = datos.bank.toLowerCase();
 
-    const bankVistaKeywords = ["pago", "tenpo", "tempo"];
+    const bankVistaKeywords = ["pago", "tenpo", "tempo", "tap", "andes"];
     const normalizedAccountType =
         accountTypeMap.get(accountType) || "Cuenta Corriente";
 
@@ -190,6 +194,7 @@ function validateAccountType(datos) {
 function validateBank(datos) {
     const bankMappings = new Map([
         ["bancosantanderchile", "Banco Santander"],
+        ["ancosantanderchile", "Banco Santander"],
 
         ["bcichile", "Banco BCI"],
         ["bancobci", "Banco BCI"],
@@ -201,11 +206,14 @@ function validateBank(datos) {
         ["bancocreditoinversiones", "Banco BCI"],
         ["bcibancodecreditoeinversiones", "Banco BCI"],
         ["bancodecreditoyinversionesbci", "Banco BCI"],
+        ["machbcibancodecreditoeinversiones", "Banco BCI"],
+        ["bancocreditosinversiones", "Banco BCI"],
 
         ["mercadopago", "Mercado Pago"],
 
         ["bancoitau", "Banco Itau"],
         ["itau", "Banco Itau"],
+        ["itu", "Banco Itau"],
 
         ["bancoscotiabank", "Banco Scotiabank"],
         ["scotiabank", "Banco Scotiabank"],
