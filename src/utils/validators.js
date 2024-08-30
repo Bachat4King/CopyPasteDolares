@@ -1,4 +1,4 @@
-import {  validate, getCheckDigit } from 'rut.js'
+import { validate, getCheckDigit } from 'rut.js'
 import validator from 'validator';
 
 import isValidCard from "./cardValidator";
@@ -7,9 +7,9 @@ function removeTildes(text) {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-function validateEmail(data){
+function validateEmail(data) {
 
-    if (validator.isEmail(data.email)){
+    if (validator.isEmail(data.email)) {
         return data
     }
 
@@ -18,7 +18,7 @@ function validateEmail(data){
 }
 
 
-function validateName(data){
+function validateName(data) {
     data.name = removeTildes(data.name)
     return data
 }
@@ -26,14 +26,14 @@ function validateName(data){
 function validateRut(data) {
     let rut = data.rut.replace(/[.\s-_]/g, "");
 
-    if (validate(rut)){
+    if (validate(rut)) {
         data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
         return data
     }
-    
+
     rut = rut + getCheckDigit(rut)
 
-    if (validate(rut) && rut.length < 10 && rut.length > 7){
+    if (validate(rut) && rut.length < 10 && rut.length > 7) {
         data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
     }
 
@@ -51,7 +51,7 @@ function validateAccountNumber(data) {
 
     if (bank.includes('estado')) {
         accountNumber = accountNumber.replace(/^0+/, ''); // Remove leading zeros
-        
+
         if (accountNumber === rut || accountNumber === rut.slice(0, -1)) {
             data.accountNumber = rut.slice(0, -1); // Remove the last character
             data.accountType = 'Cuenta Vista'
@@ -60,7 +60,13 @@ function validateAccountNumber(data) {
             data.accountNumber = rut.slice(0, -1);
             data.accountType = 'Cuenta Vista'
             return data
-        } else if (accountNumber.length < 7) {
+        }
+        else if (accountNumber.startsWith('4345')) {
+            data.accountNumber = rut.slice(0, -1);
+            data.accountType = 'Cuenta Vista'
+            return data
+        }
+        else if (accountNumber.length < 7) {
             data.accountNumber = rut.slice(0, -1);
             data.accountType = 'Cuenta Vista'
             return data
@@ -72,7 +78,9 @@ function validateAccountNumber(data) {
             data.accountNumber = rut.slice(0, -1);
             data.accountType = 'Cuenta Vista'
             return data
-        } else if (accountNumber !== rut.slice(0, -1) && !accountType.includes('corriente') && !accountType.includes('ahorro')) {
+        }
+
+        else if (accountNumber !== rut.slice(0, -1) && !accountType.includes('corriente') && !accountType.includes('ahorro')) {
             data.accountNumber = '';
             return data
         }
