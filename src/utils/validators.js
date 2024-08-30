@@ -1,46 +1,88 @@
-function removerTildes(texto) {
-    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+import {  validate, clean, format, getCheckDigit } from 'rut.js'
+
+import isValidCard from "./cardValidator";
+
+function removeTildes(text) {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-function validateRut(datos) {
-    datos.rut = datos.rut.replace(/[.\s]/g, "");
-    if (!datos.rut.includes("-")) {
-        datos.rut = datos.rut.slice(0, -1) + "-" + datos.rut.slice(-1);
-    }
 
-    return datos;
+function validateName(data){
+    data.name = removeTildes(data.name)
+    return data
 }
 
-function validateAccountNumber(datos) {
+function validateRut(data) {
+    let rut = data.rut.replace(/[.\s-_]/g, "");
 
-    // Remove leading zeros
-    datos.account_number = datos.account_number.replace(/^0+/, "");
+    if (validate(rut)){
+        data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
+        return data
+    }
+    
+    rut = rut + getCheckDigit(rut)
 
-    if (datos.bank.toLowerCase().includes("estado")) {
-        if (
-            datos.account_number.slice(-2).includes("-") ||
-            datos.account_number === datos.rut.replace("-", "")
-        ) {
-            datos.account_number = datos.account_number.slice(0, -1);
-            if (datos.account_number.length >= 16) {
-                datos.account_number = datos.rut.slice(0, -1).replace("-", "");
-            } else if (!/^\d+$/.test(datos.account_number)) {
-                datos.account_number = datos.rut.slice(0, -1).replace("-", "");
-            }
-        }
-
-        if (datos.account_number.length >= 16) {
-            datos.account_number = datos.rut.slice(0, -1).replace("-", "");
-        } else if (!/^\d+$/.test(datos.account_number)) {
-            datos.account_number = datos.rut.slice(0, -1).replace("-", "");
-        }
+    if (validate(rut) && rut.length < 10 && rut.length > 7){
+        data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
     }
 
-    // Remove all non-numeric characters
-    datos.account_number = datos.account_number.replace(/[-. ]/g, "");
+    return data;
+}
 
+function validateAccountNumber(data) {
+    data.accountNumber = data.accountNumber.replace(/[-. ]/g, '');
+    let accountNumber = data.accountNumber
 
-    return datos;
+    const bank = data.bank.toLowerCase()
+    const accountType = data.accountType.toLowerCase()
+
+    const rut = data.rut.replace(/[.\s-_]/g, "");
+
+    if (bank.includes('estado')) {
+        accountNumber = accountNumber.replace(/^0+/, ''); // Remove leading zeros
+        
+        if (accountNumber === rut || accountNumber === rut.slice(0, -1)) {
+            data.accountNumber = rut.slice(0, -1); // Remove the last character
+            data.accountType = 'Cuenta Vista'
+            return data
+        } else if (accountNumber.length >= 15) {
+            data.accountNumber = rut.slice(0, -1);
+            data.accountType = 'Cuenta Vista'
+            return data
+        } else if (accountNumber.length < 7) {
+            data.accountNumber = rut.slice(0, -1);
+            data.accountType = 'Cuenta Vista'
+            return data
+        } else if (!/^\d+$/.test(accountNumber)) { // Check if it's not a digit
+            data.accountNumber = rut.slice(0, -1);
+            data.accountType = 'Cuenta Vista'
+            return data
+        } else if (accountNumber.startsWith('9') && !rut.startsWith('9')) {
+            data.accountNumber = rut.slice(0, -1);
+            data.accountType = 'Cuenta Vista'
+            return data
+        } else if (accountNumber !== rut.slice(0, -1) && !accountType.includes('corriente') && !accountType.includes('ahorro')) {
+            data.accountNumber = '';
+            return data
+        }
+
+        return data
+    }
+    else {
+        if ((accountNumber === rut || accountNumber === rut.slice(0, -1)) && !bank.includes('estado')) {
+            data.bank = 'Banco Estado';
+            data.accountType = 'Cuenta Vista'
+            return data
+        }
+
+        if (isValidCard(data.accountNumber)) {
+            data.accountNumber = '';
+            return data
+        }
+
+        return data
+    }
+
 }
 
 function validateAccountType(datos) {
@@ -179,9 +221,11 @@ function validateAccountType(datos) {
         ["ahorr", "Cuenta Ahorro"],
         ["ahorra", "Cuenta Ahorro"],
         ["plazoviviendagirodefinido", "Cuenta Ahorro"],
+        ["platinogirodiferido", "Cuenta Ahorro"],
+
     ]);
 
-    const accountType = removerTildes(datos.account_type.toLowerCase()).replace(
+    const accountType = removeTildes(datos.accountType.toLowerCase()).replace(
         /[^a-z]/g,
         ""
     );
@@ -196,19 +240,19 @@ function validateAccountType(datos) {
         normalizedAccountType === "Cuenta Corriente" &&
         bankVistaKeywords.some((keyword) => bank.includes(keyword))
     ) {
-        datos.account_type = "Cuenta Vista";
+        datos.accountType = "Cuenta Vista";
     } else {
-        datos.account_type = normalizedAccountType;
+        datos.accountType = normalizedAccountType;
     }
 
-    datos.account_type = datos.account_type.replace(/\b\w/g, (c) =>
+    datos.accountType = datos.accountType.replace(/\b\w/g, (c) =>
         c.toUpperCase()
     );
 
     return datos;
 }
 
-function validateBank(datos) {
+function validateBank(data) {
     const bankMappings = new Map([
         ["bancosantanderchile", "Banco Santander"],
         ["ancosantanderchile", "Banco Santander"],
@@ -225,6 +269,7 @@ function validateBank(datos) {
         ["bancodecreditoyinversionesbci", "Banco BCI"],
         ["machbcibancodecreditoeinversiones", "Banco BCI"],
         ["bancocreditosinversiones", "Banco BCI"],
+        ["bancodecreditoeinversionesbcimach", "Banco BCI"],
 
         ["mercadopago", "Mercado Pago"],
         ["bancomercadopago", "Mercado Pago"],
@@ -254,6 +299,8 @@ function validateBank(datos) {
         ["tenpoprepago", "Tenpo"],
         ["tempo", "Tenpo"],
         ["tempoprepago", "Tenpo"],
+        ["bancotenpo", "Tenpo"],
+        ["banco prepago tenpo", "Tenpo"],
 
         ["tapp", "TAPP Caja Los Andes"],
         ["cajalosandes", "TAPP Caja Los Andes"],
@@ -263,10 +310,12 @@ function validateBank(datos) {
         ["tappo", "TAPP Caja Los Andes"],
     ]);
 
-    const bank = removerTildes(datos.bank.toLowerCase()).replace(/[^a-z]/g, "");
-    datos.bank = bankMappings.get(bank) || datos.bank;
+    let bank = data.bank.toLowerCase()
 
-    return datos;
+    bank = removeTildes(bank).replace(/[^a-z]/g, "");
+    data.bank = bankMappings.get(bank) || data.bank;
+
+    return data;
 }
 
 export {
@@ -274,5 +323,5 @@ export {
     validateAccountNumber,
     validateAccountType,
     validateBank,
-    removerTildes,
+    validateName
 };

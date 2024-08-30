@@ -17,28 +17,24 @@ function App() {
     setText("");
     const data = getBankData(text.split("\n"));
 
-    if (
-      data.account_number !== data.rut?.slice(0, -2) &&
-      data.bank.toLowerCase().includes("estado") &&
-      !data.account_type.toLowerCase().includes("corriente") &&
-      !data.account_type.toLowerCase().includes("ahorro")
-    ) {
-      setDisplayErrorMesagge(true);
+    if (data.accountNumber === '') {
       navigator.clipboard.writeText("");
-      setDisplayMessage(
-        "NO TRANSFERIR, NO COPIADO: NÚMERO DE CUENTA Y RUT NO COINCIDEN"
-      );
+      setDisplayErrorMesagge(true);
+      setDisplayMessage("NO TRANSFERIR, NO COPIADO: NÚMERO DE CUENTA Y RUT NO COINCIDEN");
       return;
     } else {
       setDisplayErrorMesagge(false);
     }
     setDisplayObject(data);
+
     const displayString = buildDisplayString(data);
+    
     if (!displayString) {
       navigator.clipboard.writeText("");
       setDisplayMessage("El Formato de los datos no es correcto");
       return;
     }
+
     clearClipboardAndCopy(displayString);
     setDisplayMessage("Datos Copiados al Portapapeles");
   };
@@ -48,8 +44,8 @@ function App() {
     if (data.name) displayString += `${data.name}\n`;
     if (data.bank) displayString += `${data.bank}\n`;
     if (data.rut) displayString += `${data.rut}\n`;
-    if (data.account_type) displayString += `${data.account_type}\n`;
-    if (data.account_number) displayString += `${data.account_number}\n`;
+    if (data.accountType) displayString += `${data.accountType}\n`;
+    if (data.accountNumber) displayString += `${data.accountNumber}\n`;
     if (data.email) displayString += `${data.email}\n`;
     return displayString;
   };
@@ -60,7 +56,7 @@ function App() {
       .then(() => {
         navigator.clipboard
           .writeText(displayString)
-          .then(() => {})
+          .then(() => { })
           .catch((err) => {
             console.error("Error al copiar al portapapeles: ", err);
           });
@@ -107,15 +103,15 @@ function App() {
                 <br />
               </>
             )}
-            {displayObject.account_type && (
+            {displayObject.accountType && (
               <>
-                {displayObject.account_type}
+                {displayObject.accountType}
                 <br />
               </>
             )}
-            {displayObject.account_number && (
+            {displayObject.accountNumber && (
               <>
-                {displayObject.account_number}
+                {displayObject.accountNumber}
                 <br />
               </>
             )}
