@@ -43,7 +43,11 @@ export default function getBankData(fileData) {
             }
         } else if (bank.includes("bci")) {
             indexes = [0, 8, 4, 6, 10, 2];
-        } else if (bank.includes("banco específico")) {
+        } 
+        else if (bank.includes("mach")) {
+            indexes = [0, 8, 10, 6, 4, 2];
+        }
+        else if (bank.includes("banco específico")) {
             indexes = [4, 8, 6, 2];
 
             data["accountType"] = "Cuenta Corriente";
@@ -74,9 +78,9 @@ export default function getBankData(fileData) {
             data.email = fileData[values[4]];
             data.name = fileData[values[5]];
             
-            data = validateName(data);
             data = validateBank(data);
             data = validateRut(data);
+            data = validateName(data);
             data = validateAccountType(data);
             data = validateAccountNumber(data);
             data = validateEmail(data);
