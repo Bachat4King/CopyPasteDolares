@@ -20,9 +20,22 @@ export default function getBankData(fileData) {
         if (commonBanks.some((commonBank) => commonBank.includes(bank))) {
             indexes = [0, 8, 6, 4, 10, 12];
         } else if (bank.includes("falabella")) {
-            if (!fileData[7].includes("Correo electronico")) {
+            if (!fileData[7].includes("Correo")) {
                 indexes = [0, 2, 4, 6, 8];
-                data.email = "";
+
+                data.bank = fileData[indexes[0]];
+                data.rut = fileData[indexes[1]];
+                data.accountNumber = fileData[indexes[2]];
+                data.accountType = fileData[indexes[3]];
+                data.email = ''
+                data.name = fileData[indexes[4]];
+                
+                data = validateName(data);
+                data = validateBank(data);
+                data = validateRut(data);
+                data = validateAccountType(data);
+                data = validateAccountNumber(data);
+                return data
 
             } else {
                 indexes = [0, 2, 4, 6, 8, 10];
