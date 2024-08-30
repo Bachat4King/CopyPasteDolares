@@ -4,7 +4,6 @@ import getBankData from "./utils/bank.js";
 
 function App() {
   const [text, setText] = useState("");
-  const [bank, setBank] = useState("");
   const [displayObject, setDisplayObject] = useState({});
   const [displayMessage, setDisplayMessage] = useState("");
   const [displayErrorMessage, setDisplayErrorMesagge] = useState(false);
@@ -12,10 +11,6 @@ function App() {
   const handleChange = (event) => {
     setDisplayMessage("");
     setText(event.target.value);
-  };
-
-  const handleBankChange = (event) => {
-    setBank(event.target.value); // Actualiza el estado del dropdown
   };
 
   const handleClick = () => {
@@ -78,13 +73,6 @@ function App() {
   return (
     <div className="App">
       <div className="input-section">
-        <select value={bank} onChange={handleBankChange}>
-          <option value="">Desde donde transfieres</option>
-          <option value="Falabella">Falabella</option>
-          <option value="Santander">Santander</option>
-          <option value="BCI">BCI</option>
-          <option value="Internacional">Internacional</option>
-        </select>
         <textarea
           value={text}
           onChange={handleChange}

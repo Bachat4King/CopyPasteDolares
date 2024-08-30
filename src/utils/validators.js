@@ -73,6 +73,7 @@ function validateAccountType(datos) {
         ["cuentarutvisa", "Cuenta Vista"],
         ["cuentarutdebito", "Cuenta Vista"],
         ["cuentaru", "Cuenta Vista"],
+        ["cuentarur", "Cuenta Vista"],
         ["cuentavistarut", "Cuenta Vista"],
         ["cuentarutvista", "Cuenta Vista"],
         ["cuentarutvisadebito", "Cuenta Vista"],
@@ -84,6 +85,9 @@ function validateAccountType(datos) {
         ["cuenta rit", "Cuenta Vista"],
         ["cuenta ruc", "Cuenta Vista"],
         ["cuentavistactarut", "Cuenta Vista"],
+        ["cuentavosta", "Cuenta Vista"],
+        ["cuentavistam", "Cuenta Vista"],
+        ["cuentatut", "Cuenta Vista"],
 
         ["cunetarut", "Cuenta Vista"],
         ["cunetaruc", "Cuenta Vista"],
@@ -95,19 +99,26 @@ function validateAccountType(datos) {
         ["cuestarut", "Cuenta Vista"],
         ["ctarut", "Cuenta Vista"],
         ["ctavista", "Cuenta Vista"],
+        ["cuetarut", "Cuenta Vista"],
+        ["cunentarut", "Cuenta Vista"],
+        ["cuentaeut", "Cuenta Vista"],
+        ["cuantavista", "Cuenta Vista"],
+        ["cuentevista", "Cuenta Vista"],
 
         ["debito", "Cuenta Vista"],
         ["debit", "Cuenta Vista"],
         ["deb", "Cuenta Vista"],
         ["devito", "Cuenta Vista"],
         ["debitovisa", "Cuenta Vista"],
+        ["debitocuentarut", "Cuenta Vista"],
 
         ["crédito", "Cuenta Vista"],
         ["credito", "Cuenta Vista"],
         ["credit", "Cuenta Vista"],
 
-        ["chequeraelectrica", "Cuenta Vista"],
-        ["chequeraelectronica", "Cuenta Vista"],
+        ["chequera", "Cuenta Corriente"],
+        ["chequeraelectrica", "Cuenta Corriente"],
+        ["chequeraelectronica", "Cuenta Corriente"],
 
         ["visa", "Cuenta Vista"],
         ["visadebito", "Cuenta Vista"],
@@ -119,6 +130,7 @@ function validateAccountType(datos) {
         ["bancovisa", "Cuenta Vista"],
 
         ["vista", "Cuenta Vista"],
+        ["viste", "Cuenta Vista"],
         ["vistadebito", "Cuenta Vista"],
         ["vistadeb", "Cuenta Vista"],
         ["vists", "Cuenta Vista"],
@@ -128,6 +140,9 @@ function validateAccountType(datos) {
         ["vistaaa", "Cuenta Vista"],
         ["vistacuentarut", "Cuenta Vista"],
         ["vistamaslucasdebito", "Cuenta Vista"],
+        ["vistaaccount", "Cuenta Vista"],
+        ["vusta", "Cuenta Vista"],
+        ["vistarut", "Cuenta Vista"],
 
         ["cuentalukascuentavista", "Cuenta Vista"],
         ["cuentamaslukascuentavista", "Cuenta Vista"],
@@ -142,7 +157,7 @@ function validateAccountType(datos) {
         ["cuentaluca", "Cuenta Vista"],
         ["cuentamaslucasvista", "Cuenta Vista"],
         ["cuentamaslucasdebito", "Cuenta Vista"],
-
+        ["cuentavistamaslucas", "Cuenta Vista"],
 
         ["corr", "Cuenta Corriente"],
         ["corriente", "Cuenta Corriente"],
@@ -163,6 +178,7 @@ function validateAccountType(datos) {
         ["ahorros", "Cuenta Ahorro"],
         ["ahorr", "Cuenta Ahorro"],
         ["ahorra", "Cuenta Ahorro"],
+        ["plazoviviendagirodefinido", "Cuenta Ahorro"],
     ]);
 
     const accountType = removerTildes(datos.account_type.toLowerCase()).replace(
@@ -171,7 +187,8 @@ function validateAccountType(datos) {
     );
     const bank = datos.bank.toLowerCase();
 
-    const bankVistaKeywords = ["pago", "tenpo", "tempo", "tap", "andes"];
+    const bankVistaKeywords = ["pago", "tenpo", "tempo", "tap", "andes", 'mercado'];
+
     const normalizedAccountType =
         accountTypeMap.get(accountType) || "Cuenta Corriente";
 
@@ -210,14 +227,19 @@ function validateBank(datos) {
         ["bancocreditosinversiones", "Banco BCI"],
 
         ["mercadopago", "Mercado Pago"],
+        ["bancomercadopago", "Mercado Pago"],
 
         ["bancoitau", "Banco Itau"],
         ["itau", "Banco Itau"],
         ["itu", "Banco Itau"],
 
         ["bancoscotiabank", "Banco Scotiabank"],
+        ["bancoscotiabankchile", "Banco Scotiabank"],
         ["scotiabank", "Banco Scotiabank"],
+        ["scotiabankchile", "Banco Scotiabank"],
+        ["scotiabank chile", "Banco Scotiabank"],
         ["scoitiabank", "Banco Scotiabank"],
+        ["scotiabakchile", "Banco Scotiabank"],
 
         ["bancoripley", "Banco Ripley"],
         ["ripley", "Banco Ripley"],
