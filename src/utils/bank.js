@@ -4,6 +4,7 @@ import {
     validateAccountType,
     validateBank,
     validateName,
+    validateEmail,
 } from "./validators.js";
 
 export default function getBankData(fileData) {
@@ -78,6 +79,7 @@ export default function getBankData(fileData) {
             data = validateRut(data);
             data = validateAccountType(data);
             data = validateAccountNumber(data);
+            data = validateEmail(data);
         }
 
     } catch (error) {

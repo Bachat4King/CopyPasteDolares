@@ -1,9 +1,20 @@
-import {  validate, clean, format, getCheckDigit } from 'rut.js'
+import {  validate, getCheckDigit } from 'rut.js'
+import validator from 'validator';
 
 import isValidCard from "./cardValidator";
 
 function removeTildes(text) {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function validateEmail(data){
+
+    if (validator.isEmail(data.email)){
+        return data
+    }
+
+    data.email = ''
+    return data
 }
 
 
@@ -323,5 +334,6 @@ export {
     validateAccountNumber,
     validateAccountType,
     validateBank,
-    validateName
+    validateName,
+    validateEmail
 };
