@@ -241,7 +241,7 @@ function validateAccountType(datos) {
         ["ahorra", "Cuenta Ahorro"],
         ["plazoviviendagirodefinido", "Cuenta Ahorro"],
         ["platinogirodiferido", "Cuenta Ahorro"],
-        ["platino giro diferido unipersonal", "Cuenta Ahorro"],
+        ["platinogirodiferidounipersonal", "Cuenta Ahorro"],
 
     ]);
 
