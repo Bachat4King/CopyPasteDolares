@@ -7,6 +7,11 @@ function removeTildes(text) {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+function removeNonDigits(input) {
+    return input.replace(/\D/g, '');
+}
+
+
 function validateEmail(data) {
 
     if (validator.isEmail(data.email)) {
@@ -41,7 +46,7 @@ function validateRut(data) {
 }
 
 function validateAccountNumber(data) {
-    data.accountNumber = data.accountNumber.replace(/[-. ]/g, '');
+    data.accountNumber = removeNonDigits(data.accountNumber)
     let accountNumber = data.accountNumber
 
     const bank = data.bank.toLowerCase()
