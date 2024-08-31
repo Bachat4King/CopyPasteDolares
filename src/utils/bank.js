@@ -47,6 +47,9 @@ export default function getBankData(fileData) {
         else if (bank.includes("mach")) {
             indexes = [0, 8, 10, 6, 4, 2];
         }
+        else if (bank.includes("scotiabank")) {
+            indexes = [0, 8, 4, 6, 10, 2];
+        }
         else if (bank.includes("banco específico")) {
             indexes = [4, 8, 6, 2];
 
