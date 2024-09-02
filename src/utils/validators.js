@@ -92,6 +92,14 @@ function validateAccountNumber(data) {
 
         return data
     }
+
+    else if (bank.includes('tenpo')){
+        
+        data.accountNumber = '1111' + rut.slice(0, -1)
+        return data
+    }
+
+
     else {
         if ((accountNumber === rut || accountNumber === rut.slice(0, -1)) && !bank.includes('estado')) {
             data.bank = 'Banco Estado';
@@ -100,7 +108,7 @@ function validateAccountNumber(data) {
         }
 
         if (isValidCard(data.accountNumber)) {
-            data.accountNumber = '';
+            data.accountNumber = 'tarjeta';
             return data
         }
 
