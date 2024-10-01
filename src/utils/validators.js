@@ -30,6 +30,7 @@ function validateName(data) {
 
 function validateRut(data) {
     let rut = data.rut.replace(/[.\s-_]/g, "");
+    rut = rut.replace(/^0+/, "")
 
     if (validate(rut)) {
         data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
@@ -51,17 +52,18 @@ function validateAccountNumber(data) {
 
     const bank = data.bank.toLowerCase()
     const accountType = data.accountType.toLowerCase()
-
-    const rut = data.rut.replace(/[.\s-_]/g, "");
+    
+    let rut = data.rut.replace(/[.\s-_]/g, "")
 
     if (bank.includes('estado')) {
         accountNumber = accountNumber.replace(/^0+/, ''); // Remove leading zeros
 
         if (accountNumber === rut || accountNumber === rut.slice(0, -1)) {
-            data.accountNumber = rut.slice(0, -1); // Remove the last character
+            data.accountNumber = rut.slice(0, -1); 
             data.accountType = 'Cuenta Vista'
             return data
-        } else if (accountNumber.length >= 15) {
+        } 
+        else if (accountNumber.length >= 15) {
             data.accountNumber = rut.slice(0, -1);
             data.accountType = 'Cuenta Vista'
             return data
@@ -84,6 +86,12 @@ function validateAccountNumber(data) {
             data.accountType = 'Cuenta Vista'
             return data
         }
+        
+        else if (accountNumber.startsWith('569') && !rut.startsWith('569')) {
+            data.accountNumber = rut.slice(0, -1);
+            data.accountType = 'Cuenta Vista'
+            return data
+        }
 
         else if (accountNumber !== rut.slice(0, -1) && !accountType.includes('corriente') && !accountType.includes('ahorro')) {
             data.accountNumber = '';
@@ -101,7 +109,7 @@ function validateAccountNumber(data) {
 
 
     else {
-        if ((accountNumber === rut || accountNumber === rut.slice(0, -1)) && !bank.includes('estado')) {
+        if ((accountNumber === rut || accountNumber === rut.slice(0, -1)) && !bank.includes('estado') && !bank.includes('tapp')) {
             data.bank = 'Banco Estado';
             data.accountType = 'Cuenta Vista'
             return data
@@ -262,12 +270,18 @@ function validateAccountType(datos) {
         /[^a-z]/g,
         ""
     );
-    const bank = datos.bank.toLowerCase();
+    const bank = datos.bank.toLowerCase();    
 
     const bankVistaKeywords = ["pago", "tenpo", "tempo", "tap", "andes", 'mercado'];
 
-    const normalizedAccountType =
-        accountTypeMap.get(accountType) || "Cuenta Corriente";
+    if (accountType.includes('rut') && bank == 'banco estado'){
+        datos.accountNumber = datos.rut.slice(0, -1); 
+        datos.accountType = accountTypeMap.get(accountType) || "Cuenta Corriente";
+
+        return datos
+    }
+
+    const normalizedAccountType = accountTypeMap.get(accountType) || "Cuenta Corriente";
 
     if (
         normalizedAccountType === "Cuenta Corriente" &&
