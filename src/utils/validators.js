@@ -29,19 +29,23 @@ function validateName(data) {
 }
 
 function validateRut(data) {
-    let rut = data.rut.replace(/[.\s-_]/g, "");
+    let rut = data.rut.replace(/[^\d]/g, "")
     rut = rut.replace(/^0+/, "")
-
     if (validate(rut)) {
         data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
         return data
     }
 
-    rut = rut + getCheckDigit(rut)
+    console.log(!data.bank.includes('Estado') && !data.bank.includes('tapp'))
+    // no agrega o corrige digito verificador en banco estado por las dudas
+    if (!data.bank.includes('Estado') && !data.bank.includes('tapp')){
+        rut = rut + getCheckDigit(rut)
 
-    if (validate(rut) && rut.length < 10 && rut.length > 7) {
-        data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
+        if (validate(rut) && rut.length < 10 && rut.length > 7) {
+            data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
+        }
     }
+
 
     return data;
 }
