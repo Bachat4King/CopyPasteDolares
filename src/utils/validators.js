@@ -28,16 +28,25 @@ function validateName(data) {
 function validateRut(data) {
   let rut = data.rut.replace(/[^\d]/g, "");
   rut = rut.replace(/^0+/, "");
-  console.log(rut);
+
   if (validate(rut)) {
-    console.log(getCheckDigit(rut))
-    if (getCheckDigit(rut) !== "K") {
-      data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
-      return data;
+
+    if(getCheckDigit(rut) === "K"){
+        data.rut = rut + "-" + getCheckDigit(rut);
+        console.log(data.rut)
+
+        if (data.rut.length > 10){
+        data.rut = rut.slice(0, -1)
+        data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
+        console.log(data.rut)
+        }
+
+        return data;
     }
 
-    data.rut = rut + "-" + getCheckDigit(rut);
+    data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
     return data;
+
   }
 
   // no agrega o corrige digito verificador en banco estado por las dudas
