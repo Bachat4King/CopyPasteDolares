@@ -26,14 +26,23 @@ function validateName(data) {
 }
 
 function validateRut(data) {
+
+  if(data.rut.toUpperCase().endsWith("K")){
+    if (validate(data.rut)){
+      data.rut = data.rut.replace(/[^0-9Kk]/g, "");
+      data.rut = data.rut.slice(0, -1) + "-" + data.rut.slice(-1, data.rut.length).toUpperCase()
+      return data
+    }
+  }
+
   let rut = data.rut.replace(/[^\d]/g, "");
+  
   rut = rut.replace(/^0+/, "");
 
   if (validate(rut)) {
-
     if(getCheckDigit(rut) === "K"){
+        console.log(getCheckDigit(rut))
         data.rut = rut + "-" + getCheckDigit(rut);
-        console.log(data.rut)
 
         if (data.rut.length > 10){
         data.rut = rut.slice(0, -1)
@@ -43,11 +52,12 @@ function validateRut(data) {
 
         return data;
     }
-
+    
     data.rut = rut.slice(0, -1) + '-' + rut.slice(-1, rut.length)
     return data;
 
   }
+
 
   // no agrega o corrige digito verificador en banco estado por las dudas
   if (!data.bank.includes("Estado") && !data.bank.includes("tapp")) {
